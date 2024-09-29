@@ -36,9 +36,14 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("door"))
+        if (collision.gameObject.CompareTag("YellowDoor"))
         {
             SceneManager.LoadScene("Level2");
+        }
+
+        if (collision.gameObject.CompareTag("BlueDoor"))
+        {
+            SceneManager.LoadScene("Level1");
         }
     }
 }
