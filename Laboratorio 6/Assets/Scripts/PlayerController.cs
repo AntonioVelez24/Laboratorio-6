@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,5 +26,19 @@ public class PlayerController : MonoBehaviour
     public void ReadMovementZ(InputAction.CallbackContext context)
     {
         zDirection = context.ReadValue<float>();
+    }
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("void"))
+        {
+            Destroy(gameObject);
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("door"))
+        {
+            SceneManager.LoadScene("Level2");
+        }
     }
 }
