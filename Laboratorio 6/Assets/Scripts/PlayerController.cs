@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public float speed;
+    private AudioSource _audioSource;
     private Rigidbody _rigidbody;
     private float xDirection;
     private float zDirection;
@@ -14,10 +15,25 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
     }
     void FixedUpdate()
     {
         _rigidbody.velocity = new Vector3(speed * xDirection, _rigidbody.velocity.y, speed * zDirection);
+        if (xDirection != 0 || zDirection != 0)
+        {
+            if (!_audioSource.isPlaying) 
+            {
+                _audioSource.Play();
+            }
+        }
+        else
+        {
+            if (_audioSource.isPlaying)
+            {
+                _audioSource.Stop();
+            }
+        }
     }
     public void ReadMovementX(InputAction.CallbackContext context)
     {
