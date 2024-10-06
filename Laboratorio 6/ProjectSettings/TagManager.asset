@@ -7,6 +7,9 @@ TagManager:
   - void
   - YellowDoor
   - BlueDoor
+  - RedDoor
+  - GreenDoor
+  - NPC
   layers:
   - Default
   - TransparentFX

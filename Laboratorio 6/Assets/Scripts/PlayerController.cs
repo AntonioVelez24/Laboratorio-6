@@ -5,13 +5,18 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
-{
-    public float speed;
+{   
+    [SerializeField] public float speed;
+    [SerializeField] private AudioSource doorSFX;
+    public VolumeController volumeController;
+    public UIControl uiControl;
+    public NPCMovement movement;
     private AudioSource _audioSource;
     private Rigidbody _rigidbody;
     private float xDirection;
     private float zDirection;
-
+    private bool interaction = false;
+    
     void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -43,11 +48,35 @@ public class PlayerController : MonoBehaviour
     {
         zDirection = context.ReadValue<float>();
     }
+    public void ReadInteract(InputAction.CallbackContext context)
+    {
+        if (interaction == true)
+        {
+            movement.StartCoroutine("Interact");
+        }
+    }
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("void"))
         {
             Destroy(gameObject);
+        }
+        if (collision.gameObject.CompareTag("RedDoor")|| collision.gameObject.CompareTag("GreenDoor"))
+        {
+            uiControl.StartCoroutine("Fade");
+            volumeController.ChangeSong();
+            doorSFX.Play();
+        }
+        if (collision.gameObject.CompareTag("NPC"))
+        {
+            interaction = true;
+        }
+    }
+    private void OnTriggerExit(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("NPC"))
+        {
+            interaction = false;
         }
     }
     private void OnCollisionEnter(Collision collision)
